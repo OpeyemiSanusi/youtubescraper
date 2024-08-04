@@ -1,5 +1,4 @@
-const chromium = require('chrome-aws-lambda');
-const puppeteer = require('puppeteer-core');
+const playwright = require('playwright-aws-lambda');
 
 module.exports = async (req, res) => {
   const { v } = req.query;
@@ -11,15 +10,11 @@ module.exports = async (req, res) => {
   let browser = null;
 
   try {
-    browser = await puppeteer.launch({
-      args: chromium.args,
-      defaultViewport: chromium.defaultViewport,
-      executablePath: await chromium.executablePath,
-      headless: chromium.headless,
-    });
-
-    const page = await browser.newPage();
-    await page.goto(url, { waitUntil: 'networkidle0' });
+    browser = await playwright.launchChromium();
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    
+    await page.goto(url, { waitUntil: 'networkidle' });
 
     // Wait for 7 seconds
     await page.waitForTimeout(7000);
