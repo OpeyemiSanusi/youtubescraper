@@ -1,8 +1,17 @@
 {
   "version": 2,
-  "builds": [{ "src": "api/scrape.js", "use": "@vercel/node" }],
+  "builds": [
+    {
+      "src": "api/scrape.js",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["install-deps.sh"]
+      }
+    }
+  ],
   "routes": [{ "src": "/api/scrape", "dest": "api/scrape.js" }],
   "env": {
     "PLAYWRIGHT_BROWSERS_PATH": "0"
-  }
+  },
+  "buildCommand": "bash install-deps.sh && npm install"
 }
