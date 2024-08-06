@@ -1,16 +1,14 @@
 {
-  "name": "vercel-puppeteer-scraper",
+  "name": "vercel-playwright-scraper",
   "version": "1.0.0",
-  "description": "Web scraper using Puppeteer on Vercel",
+  "description": "Web scraper using Playwright on Vercel",
   "main": "index.js",
+  "type": "module",
   "engines": {
     "node": "20.x"
   },
   "dependencies": {
-    "chrome-aws-lambda": "^6.0.0",
-    "puppeteer-core": "^6.0.0"
-  },
-  "devDependencies": {
-    "puppeteer": "^6.0.0"
+    "playwright-aws-lambda": "^0.9.0",
+    "playwright-core": "^1.35.0"
   }
 }
