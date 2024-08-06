@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer';
+import { getChromium } from 'playwright-aws-lambda';
 
 export default async function (req, res) {
   const { v } = req.query;
@@ -10,13 +10,11 @@ export default async function (req, res) {
   let browser = null;
 
   try {
-    browser = await puppeteer.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
-      headless: "new",
-    });
-
-    const page = await browser.newPage();
-    await page.goto(url, { waitUntil: 'networkidle0' });
+    browser = await getChromium();
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    
+    await page.goto(url, { waitUntil: 'networkidle' });
 
     // Wait for 7 seconds
     await page.waitForTimeout(7000);
@@ -30,7 +28,7 @@ export default async function (req, res) {
   } catch (error) {
     res.status(500).json({ error: error.message });
   } finally {
-    if (browser !== null) {
+    if (browser) {
       await browser.close();
     }
   }
